@@ -1,0 +1,4 @@
+*.class
+bin/
+files/Gowalla_edges.txt
+files/Gowalla_totalCheckins.txt
