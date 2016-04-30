@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -16,18 +17,32 @@ public class LoadData {
 	private static final String TRAIN_FILE = "files/filtered_train_file.txt";
 	private static final String TEST_FILE = "files/filtered_test_file.txt";
 	
+	private static final String DATASET_TRAIN_FILE = "files/dataset_train_file_";
+	private static final String DATASET_TEST_FILE = "files/dataset_test_file_";
+	
+	private static int lastLoadedDataSet = 0;
 	private static LoadData loader;
 	private static Map<String, List<String>> trainDataMap;
 	private static Map<String, List<String>> testDataMap;
 	
-	
 	private LoadData(){}
 	
-	public static LoadData getInstance(){
-		if(loader == null){
-			trainDataMap = getData(TRAIN_FILE);
-			testDataMap = getData(TEST_FILE);
+	public static LoadData getInstance(int trainingSet){
+		//switch dataset
+//		if(trainingSet == -1){
+//			if(loader == null){
+//				trainDataMap = getData(TRAIN_FILE);
+//				testDataMap = getData(TEST_FILE);
+//				loader = new LoadData();
+//			}
+//			lastLoadedDataSet = -1;
+//		}else 
+		if(loader == null || trainingSet != lastLoadedDataSet){
+			trainDataMap = getData(DATASET_TRAIN_FILE + trainingSet + ".txt");
+			testDataMap = getData(DATASET_TEST_FILE + trainingSet + ".txt");
+			
 			loader = new LoadData();
+			lastLoadedDataSet = trainingSet;
 		}
 		return loader;
 	}
@@ -36,15 +51,15 @@ public class LoadData {
 		return trainDataMap;
 	}
 	
-	public List<String> getUsers(int trainingSet){
+	public List<String> getUsers(){
 		return new ArrayList<>(trainDataMap.keySet());
 	}
 	
-	public List<String> getVisitedPoisOfUser(String userId, int trainingSet){
+	public List<String> getVisitedPoisOfUser(String userId){
 		 return trainDataMap.get(userId);
 	}
 	
-	public List<String> getHiddenPoisOfUser(String userId, int trainingSet){
+	public List<String> getHiddenPoisOfUser(String userId){
 		return testDataMap.get(userId);
 	}
 	
@@ -75,7 +90,7 @@ public class LoadData {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return map;
 	}
 	

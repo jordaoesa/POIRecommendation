@@ -10,7 +10,7 @@ public abstract class Algorithm {
 	//Numero maximo de pois a serem recomendados para o usuario. Este varia em cada iteracao
 	private final int MAX_RECOMMENDED_POIS = 10;
 	//Numero de conjuntos de treinamento
-	private final int MAX_TRAINING_SETS = 1;
+	private final int MAX_TRAINING_SETS = 10;
 	//Numero de usuarios similares a serem levados em conta
 	protected final int TOP_SIMILAR_USERS = 10;
 	//Numero de pois a serem selecionados de cada usuario
@@ -35,14 +35,15 @@ public abstract class Algorithm {
 	}
 	
 	private void executeAlgorithm(int numRecPois, int trainingSet){
-		List<String> users = LoadData.getInstance().getUsers(trainingSet);
+		List<String> users = LoadData.getInstance(trainingSet).getUsers();
+		
 		int i = 0;
 		double denominator = 0.0;
 		precision = 0.0;
 		for(String userId : users){
-			i++; if(i==10) break;
+			i++; if(i==5) break;
 			
-			List<String> hiddenPois = LoadData.getInstance().getHiddenPoisOfUser(userId, trainingSet);
+			List<String> hiddenPois = LoadData.getInstance(trainingSet).getHiddenPoisOfUser(userId);
 			List<String> recommendedPois = getRecommendedPoisForUser(userId, numRecPois, trainingSet);
 
 			int min = Math.min(numRecPois, recommendedPois.size());

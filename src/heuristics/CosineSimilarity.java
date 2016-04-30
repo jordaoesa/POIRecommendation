@@ -38,7 +38,7 @@ public class CosineSimilarity extends Algorithm {
 		List<String> mostSimilarUsers = new ArrayList<>();
 		List<UserSimilarity> similarities = new ArrayList<>();
 		
-		for(String id : LoadData.getInstance().getAllUsersAndPois().keySet()){
+		for(String id : LoadData.getInstance(trainingSet).getAllUsersAndPois().keySet()){
 			if(!id.equals(userId)){
 				similarities.add(calculateSimilarity(userId, id, trainingSet));
 			}
@@ -66,7 +66,7 @@ public class CosineSimilarity extends Algorithm {
 		
 		for(String userId : mostSimilarUsers){
 			//pega somente um numero determinado de pois daquele usuario
-			List<String> chosenPois = getChosenPois(LoadData.getInstance().getVisitedPoisOfUser(userId, trainingSet));
+			List<String> chosenPois = getChosenPois(LoadData.getInstance(trainingSet).getVisitedPoisOfUser(userId));
 			for(String poi : chosenPois){
 				if(!recommendedPois.contains(poi)){
 					recommendedPois.add(poi);
@@ -102,8 +102,8 @@ public class CosineSimilarity extends Algorithm {
 	private UserSimilarity calculateSimilarity(String userId, String userIdOther, int trainingSet){
 		UserSimilarity similarity = new UserSimilarity(userIdOther);
 		
-		List<String> pois = LoadData.getInstance().getVisitedPoisOfUser(userId, trainingSet);
-		List<String> poisOther = LoadData.getInstance().getVisitedPoisOfUser(userIdOther, trainingSet);
+		List<String> pois = LoadData.getInstance(trainingSet).getVisitedPoisOfUser(userId);
+		List<String> poisOther = LoadData.getInstance(trainingSet).getVisitedPoisOfUser(userIdOther);
 		
 		double numerator = 0.0;
 		double denominator = 0.0;
