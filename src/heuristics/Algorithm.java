@@ -10,6 +10,7 @@ public abstract class Algorithm {
 	private final int MAX_RECOMMENDED_POIS = 10;
 	private final int MAX_TRAINING_SETS = 1;
 	protected final int TOP_SIMILAR_USERS = 10;
+	protected final int NUMBER_POIS_PER_USER = 10;
 	private double precision;
 	
 	
@@ -29,10 +30,11 @@ public abstract class Algorithm {
 	private void executeAlgorithm(int numRecPois, int trainingSet){
 		List<String> users = LoadData.getInstance().getUsers(trainingSet);
 		int i = 0;
+		double denominator = 0.0;
+		precision = 0.0;
 		for(String userId : users){
-			i++; if(i==10) break;
+			i++; if(i==5) break;
 			
-			precision = 0.0;
 			List<String> hiddenPois = LoadData.getInstance().getHiddenPoisOfUser(userId, trainingSet);
 			List<String> recommendedPois = getRecommendedPoisForUser(userId, trainingSet);
 			
@@ -40,15 +42,16 @@ public abstract class Algorithm {
 			List<String> subList = recommendedPois.subList(0, min);
 
 			for(String hiddenPoi : hiddenPois){
+				denominator++;
 				if(subList.contains(hiddenPoi)){
 					precision += 1.0/min;
 				}
 			}
-			
-			System.out.println("Com " + numRecPois + " POIs recomendados para user " + userId + ", o resultado foi:");
-			System.out.println("precision -> " + precision);
-			System.out.println("=========================================");
 		}
+		precision = precision / denominator;
+		System.out.println("Com " + numRecPois + " POIs, o resultado foi:");
+		System.out.println("precision -> " + precision);
+		System.out.println("=========================================");
 	}
 	
 	private double avg(List<Double> precisions){

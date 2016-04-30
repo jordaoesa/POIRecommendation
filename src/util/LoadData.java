@@ -32,6 +32,10 @@ public class LoadData {
 		return loader;
 	}
 	
+	public Map<String, List<String>> getAllUsersAndPois(){
+		return trainDataMap;
+	}
+	
 	public List<String> getUsers(int trainingSet){
 		return new ArrayList<>(trainDataMap.keySet());
 	}
