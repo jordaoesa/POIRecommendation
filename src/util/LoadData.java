@@ -11,36 +11,36 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class LoadFiles {
+public class LoadData {
 	
 	private static final String TRAIN_FILE = "files/filtered_train_file.txt";
 	private static final String TEST_FILE = "files/filtered_test_file.txt";
 	
-	private static LoadFiles loader;
+	private static LoadData loader;
 	private static Map<String, List<String>> trainDataMap;
 	private static Map<String, List<String>> testDataMap;
 	
 	
-	private LoadFiles(){}
+	private LoadData(){}
 	
-	public static LoadFiles getInstance(){
+	public static LoadData getInstance(){
 		if(loader == null){
 			trainDataMap = getData(TRAIN_FILE);
 			testDataMap = getData(TEST_FILE);
-			loader = new LoadFiles();
+			loader = new LoadData();
 		}
 		return loader;
 	}
 	
-	public List<String> getUsers(){
+	public List<String> getUsers(int trainingSet){
 		return new ArrayList<>(trainDataMap.keySet());
 	}
 	
-	public List<String> getVisitedPoisOfUser(String userId){
+	public List<String> getVisitedPoisOfUser(String userId, int trainingSet){
 		 return trainDataMap.get(userId);
 	}
 	
-	public List<String> getHiddenPoisOfUser(String userId){
+	public List<String> getHiddenPoisOfUser(String userId, int trainingSet){
 		return testDataMap.get(userId);
 	}
 	
