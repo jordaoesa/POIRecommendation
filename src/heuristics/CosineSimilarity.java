@@ -1,5 +1,7 @@
 package heuristics;
 
-public class CosineSimilarity {
+public class CosineSimilarity extends Algorithm {
+	
+	
 
 }
