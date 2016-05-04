@@ -13,7 +13,7 @@ public class CosineSimilarity extends Algorithm {
 	public List<String> getRecommendedPoisForUser(String userId, int numRecPois, int trainingSet) {
 		
 		List<String> mostSimilarUsers = getMostSimilarUsers(userId, trainingSet);
-		List<String> recommendedPois = getRecommendedPois(mostSimilarUsers, trainingSet);
+		List<String> recommendedPois = getRecommendedPois(userId, mostSimilarUsers, trainingSet);
 		
 		List<String> list = new ArrayList<>();
 		//pegar os pois em ordem de adicionados (do usuario mais similar para os menos)
@@ -61,14 +61,15 @@ public class CosineSimilarity extends Algorithm {
 	 * @param trainingSet
 	 * @return
 	 */
-	private List<String> getRecommendedPois(List<String> mostSimilarUsers, int trainingSet){
+	private List<String> getRecommendedPois(String userId, List<String> mostSimilarUsers, int trainingSet){
 		List<String> recommendedPois = new ArrayList<>();
+		List<String> myPois = LoadData.getInstance(trainingSet).getVisitedPoisOfUser(userId);
 		
-		for(String userId : mostSimilarUsers){
+		for(String uId : mostSimilarUsers){
 			//pega somente um numero determinado de pois daquele usuario
-			List<String> chosenPois = getChosenPois(LoadData.getInstance(trainingSet).getVisitedPoisOfUser(userId));
+			List<String> chosenPois = getChosenPois(LoadData.getInstance(trainingSet).getVisitedPoisOfUser(uId));
 			for(String poi : chosenPois){
-				if(!recommendedPois.contains(poi)){
+				if(!recommendedPois.contains(poi) && !myPois.contains(poi)){
 					recommendedPois.add(poi);
 				}
 			}

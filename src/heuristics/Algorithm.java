@@ -37,11 +37,11 @@ public abstract class Algorithm {
 	private void executeAlgorithm(int numRecPois, int trainingSet){
 		List<String> users = LoadData.getInstance(trainingSet).getUsers();
 		
-		//int i = 0;
+		int i = 0;
 		double denominator = 0.0;
 		precision = 0.0;
 		for(String userId : users){
-			//i++; if(i==5) break;
+			i++; if(i==5) break;
 			
 			List<String> hiddenPois = LoadData.getInstance(trainingSet).getHiddenPoisOfUser(userId);
 			List<String> recommendedPois = getRecommendedPoisForUser(userId, numRecPois, trainingSet);
